@@ -170,11 +170,12 @@ else
     exit 0
 fi
 
-if [ -f config/application.yml.example ] && [! f config/application.yml.example ]; then
+if [ -f config/application.yml.example ] && [ ! -f config/application.yml ]; then
   cp config/application.yml.example config/application.yml
-  echo 'Set your application settings in config/application.yml'
+  echo 'Please set your application settings in config/application.yml'
 fi
 
 if [ -f /opt/nginx/conf/nginx.conf ]; then
-    echo 'Set your application configuration in /opt/nginx/conf/nginx.conf'
+    echo 'Please set your application configuration in /opt/nginx/conf/nginx.conf'
 fi
+echo 'Succesfully finished setting up your application'
