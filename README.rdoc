@@ -4,7 +4,7 @@ Application for setting up other applications
 
 How to setup:
 
-1.copy app_requirements.yml.example to your your_app/config/app_requirements.yml.example
+1.copy app_requirements.yml.example to your_app/config/app_requirements.yml.example
 
 2.copy install.sh to your_app/script/install.sh
 
