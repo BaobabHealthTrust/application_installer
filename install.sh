@@ -11,7 +11,7 @@ fi
 red='\e[0;31m'
 green='\e[0;32m'
 NC='\e[0m'
-MSG="and run $0 { ENVIRONMENT SITE MACHINE_PASSWORD STACKTRACE=true } again"
+MSG="and run $0 { ENVIRONMENT SITE _PASSWORD STACKTRACE=true } again"
 ENV=$1
 SITE=$2
 
@@ -119,7 +119,7 @@ echo 'Finished installing gems'
 #setting up database and application
 if [ "mysql" == "$DB_NAME" ] ; then
     usage(){
-        echo "Usage: $0 ENVIRONMENT SITE"
+        echo "Usage: $0 ENVIRONMENT SITE SU_PASSWORD STACKTRACE=true"
         echo
         echo "ENVIRONMENT should be: development|test|production"
     } 
