@@ -16,12 +16,12 @@ ENV=$1
 SITE=$2
 
 # check if application requirements file is available then set it  
-if [ ! -f config/application_requirements.yml ] ; then
-	cp config/application_requirements.yml.example config/application_requirements.yml
+if [ ! -f config/app_requirements.yml ] ; then
+	cp config/app_requirements.yml.example config/app_requirements.yml
 fi
    
 # read application configuration file
-IFS=$'\n' read -d '' -r -a requirements < /var/www/Registration/config/application_requirements.yml
+IFS=$'\n' read -d '' -r -a requirements < /var/www/Registration/config/app_requirements.yml
 
 # initialize variables
 RB_VERSION=`echo "${requirements[0]}" | cut -d':' -f2`
