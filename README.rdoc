@@ -4,11 +4,11 @@ Application for setting up other applications
 
 How to setup:
 
-1.copy application_requirements.yml.example to your your_app/config/application_requirements.yml.example
+1.copy app_requirements.yml.example to your your_app/config/app_requirements.yml.example
 
 2.copy install.sh to your_app/script/install.sh
 
-3.open your_app/config/application_requirements.yml.example to verify your requirements
+3.open your_app/config/app_requirements.yml.example to verify your requirements
 
 4.run ./script/install.sh [environment site su_password stacktrace=true] within your application
 
