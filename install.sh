@@ -141,7 +141,6 @@ if [ "mysql" == "$DB_NAME" ] ; then
     echo "DROP DATABASE $DATABASE;" | mysql --host=$HOST --user=$USERNAME --password=$PASSWORD
     echo "CREATE DATABASE $DATABASE;" | mysql --host=$HOST --user=$USERNAME --password=$PASSWORD
 
-
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/openmrs_1_7_2_concept_server_full_db.sql
     #echo "schema additions"
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/schema_bart2_additions.sql
@@ -149,7 +148,6 @@ if [ "mysql" == "$DB_NAME" ] ; then
     #echo "defaults"
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/defaults.sql
     #echo "user schema modifications"
-    #mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/user_schema_modifications.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/malawi_regions.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/mysql_functions.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/drug_ingredient.sql
@@ -159,25 +157,24 @@ if [ "mysql" == "$DB_NAME" ] ; then
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/data/${SITE}/${SITE}.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/data/${SITE}/tasks.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/moh_regimens_only.sql
-    #mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/regimen_indexes.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/retrospective_station_entries.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/create_dde_server_connection.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/openmrs_metadata_1_7.sql
-
-
-    #mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/privilege.sql
-    #mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/bart2_role_privileges.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/migrate/create_weight_height_for_ages.sql
     mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/migrate/insert_weight_for_ages.sql
-    #mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/regimens.sql
-
-    #rake openmrs:bootstrap:load:defaults RAILS_ENV=$ENV
-    #rake openmrs:bootstrap:load:site SITE=$SITE RAILS_ENV=production#
-
+    
     echo "Succesfully created and configured database"
 elif [ "couchdb" == "$DB_NAME" ] ; then
-    `rake dde:setup`
+    echo "Succesfully created and configured couchdb database"
 else 
     exit 0
 fi
 
+if [ -f config/application.yml.example ] && [! f config/application.yml.example ]; then
+  cp config/application.yml.example config/application.yml
+  echo "Set your application settings in config/application.yml"
+fi
+
+if [ -f /opt/nginx/conf/nginx.conf ]; then
+    echo 'Set your application configuration in /opt/nginx/conf/nginx.conf'
+fi
