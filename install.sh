@@ -11,7 +11,7 @@ fi
 red='\e[0;31m'
 green='\e[0;32m'
 NC='\e[0m'
-MSG="and run $0 { ENVIRONMENT SITE _PASSWORD STACKTRACE=true } again"
+MSG="and run $0 [ ENVIRONMENT SITE _PASSWORD STACKTRACE=true ] again"
 ENV=$1
 SITE=$2
 
