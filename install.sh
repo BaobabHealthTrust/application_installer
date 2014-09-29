@@ -60,9 +60,11 @@ else
 fi
 
 #check if nginx is installed
-if [ ! -f /opt/nginx/conf/nginx.conf ]; then
+if [ ! -f /opt/nginx/conf/nginx.conf ] || [ ! -f /usr/nginx/conf/nginx.conf ] || [ ! -f /etc/nginx/conf/nginx.conf ]; then
     echo -e "${red}Nginx not installed${NC}"
     echo "Please install nginx with passenger $MSG"
+    echo "Run sudo apt-get install passenger to install passenger then run"
+    echo "Run sudo passenger-install-nginx-module to install nginx"
     exit 0
 else
     echo "Nginx installed"
@@ -74,6 +76,7 @@ if [ "$RB_VERSION" == "$RB_INSTALLED_VERSION" ] ; then
 else 
     echo -e "${red}ruby $RB_VERSION not installed${NC}"
     echo "Please install ruby $RB_VERSION $MSG"
+    echo ""
     exit 0
 fi
 #compare installed rubygems with specified rubygems
