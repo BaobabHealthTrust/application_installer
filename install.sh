@@ -1,17 +1,13 @@
 #!/bin/bash
 # check if stacktrace is passed and set it to true
 # stacktrace gives useful debug information
-if [[ ! -z "$4" ]]; then
-    if [ "$4" == "true" ]; then
-        set -x
-    fi
-fi
+set -x
 
 # set colors and message
 red='\e[0;31m'
 green='\e[0;32m'
 NC='\e[0m'
-MSG="and run $0 [ ENVIRONMENT SITE SU_PASSWORD STACKTRACE=true ] again"
+MSG="and run $0 [ ENVIRONMENT SITE SU_PASSWORD] again"
 ENV=$1
 SITE=$2
 
@@ -149,39 +145,23 @@ if [ "mysql" == "$DB_NAME" ] ; then
     if [ ! -f config/database.yml ] ; then
         cp config/database.yml.example config/database.yml
     fi
+  
+  USERNAME=`ruby -ryaml -e "puts YAML::load_file('config/database.yml')['${ENV}']['username']"`
+  PASSWORD=`ruby -ryaml -e "puts YAML::load_file('config/database.yml')['${ENV}']['password']"`
+  DATABASE=`ruby -ryaml -e "puts YAML::load_file('config/database.yml')['${ENV}']['database']"`
 
-    USERNAME=`ruby -ryaml -e "puts YAML::load_file('config/database.yml')['${ENV}']['username']"`
-    PASSWORD=`ruby -ryaml -e "puts YAML::load_file('config/database.yml')['${ENV}']['password']"`
-    DATABASE=`ruby -ryaml -e "puts YAML::load_file('config/database.yml')['${ENV}']['database']"`
-    HOST=`ruby -ryaml -e "puts YAML::load_file('config/database.yml')['${ENV}']['host']"`
+  echo "DROP DATABASE $DATABASE;" | mysql --user=$USERNAME --password=$PASSWORD
+  echo "CREATE DATABASE $DATABASE;" | mysql --user=$USERNAME --password=$PASSWORD
 
-    echo "DROP DATABASE $DATABASE;" | mysql --host=$HOST --user=$USERNAME --password=$PASSWORD
-    echo "CREATE DATABASE $DATABASE;" | mysql --host=$HOST --user=$USERNAME --password=$PASSWORD
 
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/openmrs_1_7_2_concept_server_full_db.sql
-    #echo "schema additions"
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/schema_bart2_additions.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/bart2_views_schema_additions.sql
-    #echo "defaults"
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/defaults.sql
-    #echo "user schema modifications"
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/malawi_regions.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/mysql_functions.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/drug_ingredient.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/pharmacy.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/national_id.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/weight_for_heights.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/data/${SITE}/${SITE}.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/data/${SITE}/tasks.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/moh_regimens_only.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/retrospective_station_entries.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/create_dde_server_connection.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/openmrs_metadata_1_7.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/migrate/create_weight_height_for_ages.sql
-    mysql --host=$HOST --user=$USERNAME --password=$PASSWORD $DATABASE < db/migrate/insert_weight_for_ages.sql
-    
-    echo "Succesfully created and configured database"
+  #mysql --user=$USERNAME --password=$PASSWORD $DATABASE < db/initialization_script
+  
+  ###to be done
+  
+  echo rake db:migrate
+  
 elif [ "couchdb" == "$DB_NAME" ] ; then
+    rake dde:setup
     echo "Succesfully created and configured couchdb database"
 else 
     exit 0
