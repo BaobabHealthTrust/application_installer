@@ -76,7 +76,11 @@ if [ "$RB_VERSION" == "$RB_INSTALLED_VERSION" ] ; then
 else 
     echo -e "${red}ruby $RB_VERSION not installed${NC}"
     echo "Please install ruby $RB_VERSION $MSG"
-    echo ""
+    echo "Install ruby using ruby-install,rvm or rbenv"
+    echo "Follow either of these"
+    echo "ruby-Install: https://github.com/postmodern/ruby-install"
+    echo "rvm: http://rvm.io/"
+    echo "rbenv: https://github.com/sstephenson/rbenv"
     exit 0
 fi
 #compare installed rubygems with specified rubygems
@@ -85,6 +89,8 @@ if [ "$RG_VERSION" == "$RG_INSTALLED_VERSION" ] ; then
 else 
     echo -e "${red}rubygems $RG_VERSION not installed${NC}"
     echo "Please install rubygems $RG_VERSION $MSG"
+    echo "Run sudo apt-get install rubygems to install rubygems"
+    echo "The run sudo apt-get update rubygems=$RG_VERSION"
     exit 0
 fi
 
@@ -94,6 +100,14 @@ if [ "$FIRST_DB_INSTALLED_NAME" == "$DB_NAME" ] || [ "$SECOND_DB_INSTALLED_NAME"
 else 
     echo -e "${red}$DB_NAME database not installed${NC}"
     echo "Please install $DB_NAME database $MSG"
+    if ["$DB_NAME"=='mysql'];
+        echo "run sudo apt-get install mysql-client mysql-server"
+    fi
+    
+    if ["$DB_NAME"=='couchdb'];
+        echo "run sudo apt-get install couchdb"
+    fi
+    
     exit 0
 fi
 
