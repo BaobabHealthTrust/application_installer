@@ -21,7 +21,7 @@ if [ ! -f config/app_requirements.yml ] ; then
 fi
    
 # read application configuration file
-IFS=$'\n' read -d '' -r -a requirements < /var/www/Registration/config/app_requirements.yml
+IFS=$'\n' read -d '' -r -a requirements < config/app_requirements.yml
 
 # initialize variables
 RB_VERSION=`echo "${requirements[0]}" | cut -d':' -f2`
