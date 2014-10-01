@@ -96,11 +96,11 @@ if [ "$FIRST_DB_INSTALLED_NAME" == "$DB_NAME" ] || [ "$SECOND_DB_INSTALLED_NAME"
 else 
     echo -e "${red}$DB_NAME database not installed${NC}"
     echo "Please install $DB_NAME database $MSG"
-    if ["$DB_NAME"=='mysql'];
+    if ["$DB_NAME"=='mysql']; then
         echo "run sudo apt-get install mysql-client mysql-server"
     fi
     
-    if ["$DB_NAME"=='couchdb'];
+    if ["$DB_NAME"=='couchdb']; then
         echo "run sudo apt-get install couchdb"
     fi
     
