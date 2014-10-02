@@ -175,4 +175,13 @@ fi
 if [ -f /opt/nginx/conf/nginx.conf ]; then
     echo 'Please set your application configuration in /opt/nginx/conf/nginx.conf'
 fi
+
+if [ -f /usr/nginx/conf/nginx.conf ]; then
+  echo 'Please set your application configuration in /usr/nginx/conf/nginx.conf'
+fi
+
+if [ -f /etc/nginx/conf/nginx.conf ]; then
+  echo 'Please set your application configuration in /etc/nginx/conf/nginx.conf'
+fi
+
 echo 'Succesfully finished setting up your application'
