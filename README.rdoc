@@ -10,7 +10,7 @@ How to setup:
 
 3.open your_app/config/app_requirements.yml.example to verify your requirements
 
-4.run ./script/install.sh [environment site su_password stacktrace=true] within your application
+4.run ./script/install.sh [environment site su_password] within your application
 
 
 
