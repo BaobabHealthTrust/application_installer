@@ -150,15 +150,30 @@ if [ "mysql" == "$DB_NAME" ] ; then
   PASSWORD=`ruby -ryaml -e "puts YAML::load_file('config/database.yml')['${ENV}']['password']"`
   DATABASE=`ruby -ryaml -e "puts YAML::load_file('config/database.yml')['${ENV}']['database']"`
 
-  echo "DROP DATABASE $DATABASE;" | mysql --user=$USERNAME --password=$PASSWORD
-  echo "CREATE DATABASE $DATABASE;" | mysql --user=$USERNAME --password=$PASSWORD
-
+  #echo "DROP DATABASE $DATABASE;" | mysql --user=$USERNAME --password=$PASSWORD
+  #echo "CREATE DATABASE $DATABASE;" | mysql --user=$USERNAME --password=$PASSWORD
 
   #mysql --user=$USERNAME --password=$PASSWORD $DATABASE < db/initialization_script
-  
+
+  #check the database initialization script
+  if [ -f script/initial_database_setup.sh ]; then
+      echo "database initialization"
+       RAILS_ENV=${ENV}
+       ./script/initial_database_setup.sh ${ENV} ${SITE}
+
+       bundle exec rake db:migrate
+  else
+    if [ -f bin/initial_database_setup.sh ]; then
+      RAILS_ENV=${ENV}
+       ./bin/initial_database_setup.sh ${ENV} ${SITE}
+
+       bundle exec rake db:migrate
+    fi
+  fi
+
   ###to be done
   
-  echo rake db:migrate
+  ##echo bundle exec rake db:migrate
   
 elif [ "couchdb" == "$DB_NAME" ] ; then
     rake dde:setup
